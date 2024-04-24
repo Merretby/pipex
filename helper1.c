@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 12:41:26 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/04/20 14:14:30 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/04/24 14:50:37 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,22 @@ int	ft_strncmp(char *str1, char *str2, size_t n)
 	}
 	return (0);
 }
-// int main ()
-// {
-// 	char *s1 = "hello";
-// 	char *s2 = "hellp";
-// 	printf("%d\n", ft_strncmp(s1, s2));
-// }
+
+void	ft_error(char *str)
+{
+	ft_putstr(str);
+	exit(1);
+}
+
+void	ft_putstr(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		write(2, &str[i], 1);
+		i++;
+	}
+	write (2, "\n", 1);
+}

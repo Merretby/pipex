@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 12:33:32 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/04/25 17:52:55 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/04/25 18:09:55 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	execute(char *av, char **env, t_list *par)
 	int		i;
 
 	i = 0;
+	par->line = NULL;
 	while (env[i])
 	{
 		if (ft_strncmp(env[i], "PATH=", 5) == 0)
@@ -42,10 +43,9 @@ void	execute(char *av, char **env, t_list *par)
 		else
 		{
 			if (access(par->arg[0], F_OK | X_OK) == 0)
-			{
-				if (execve(par->arg[0], par->arg, env) == -1)
-					error("invalid path", par, path);
-			}
+				execve(par->arg[0], par->arg, env);
+			else
+				error("invalid path", par, path);
 		}
 		i++;
 	}

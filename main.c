@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 12:33:32 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/04/25 14:48:12 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/04/25 17:52:55 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	execute(char *av, char **env, t_list *par)
 {
-	char *str;
+	char	*str;
 	char	**path;
 	int		i;
 
@@ -32,44 +32,27 @@ void	execute(char *av, char **env, t_list *par)
 	{
 		if (ft_strchr(par->arg[0], '/') == NULL)
 		{
-			dprintf(2,"mafiya slash \n");
 			str = ft_strjoin("/", par->arg[0]);
 			par->line = ft_strjoin(path[i], str);
 			free (str);
 			if (access(par->line, F_OK) == 0)
-			{
-				printf("found it now breaking \n");
 				break ;
-			}
 			free(par->line);
 		}
 		else
 		{
-			dprintf(2,"fiya slash \n");
 			if (access(par->arg[0], F_OK | X_OK) == 0)
 			{
 				if (execve(par->arg[0], par->arg, env) == -1)
-				{
-					// free(par->line);
-					ft_free(path);
-					ft_free(par->arg);
-					ft_error("invalid path");
-					// exit(0);
-			
-				}
+					error("invalid path", par, path);
 			}
 		}
 		i++;
-		printf("1->%p\n", par->line);
 	}
-	dprintf(2,"akhir haja => %s \n",par->line);
-	if (execve(par->line, par->arg, env) == -1)
+	if (ft_strchr(par->arg[0], '/') == NULL)
 	{
-		// free (par->line);
-		ft_free(path);
-		ft_free(par->arg);
-		dprintf(2,"ana f execve \n");
-		ft_error("invalid path");
+		if (execve(par->line, par->arg, env) == -1)
+			error("invalid path", par, path);
 	}
 }
 
@@ -116,7 +99,7 @@ int	main(int ac, char **av, char **env)
 		ft_error("U NEED 5 ARGUMENT");
 	if (av[2][0] == '\0' || av[2][0] == '\\' || av[2][0] == '\t'\
 		|| av[2][0] == ' ' || av[2][0] == '.' || av[3][0] == '\0'\
-		|| av[3][0] == '\\' || av[3][0] == '\t'|| av[3][0] == ' '\
+		|| av[3][0] == '\\' || av[3][0] == '\t' || av[3][0] == ' '\
 		|| av[3][0] == '.')
 		ft_error("ERROR");
 	if (pipe(fd) == -1)

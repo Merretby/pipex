@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 12:24:22 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/04/25 17:51:27 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/04/25 20:34:30 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,5 +35,8 @@ void	ft_error(char *str);
 void	error(char *str, t_list *par, char **path);
 void	ft_putstr(char *str);
 void	ft_free(char **fr);
+void	execute(char *av, char **env, t_list *par);
+void	child(char **av, char **env, t_list *par, int *fd);
+void	child2(char **av, char **env, t_list *par, int *fd);
 
 #endif

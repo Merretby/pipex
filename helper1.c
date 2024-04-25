@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 12:41:26 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/04/25 19:42:41 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/04/25 20:33:26 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,4 +69,38 @@ int	ft_strncmp(char *str1, char *str2, size_t n)
 		i++;
 	}
 	return (0);
+}
+
+void	child(char **av, char **env, t_list *par, int *fd)
+{
+	int	file;
+
+	if (access(av[1], R_OK) == -1)
+		ft_error("permission denied");
+	file = open(av[1], O_RDONLY, 0777);
+	close(fd[0]);
+	dup2(fd[1], 1);
+	close(fd[1]);
+	dup2(file, 0);
+	close(file);
+	execute (av[2], env, par);
+}
+
+void	child2(char **av, char **env, t_list *par, int *fd)
+{
+	int	file;
+
+	file = 0;
+	if (access(av[4], F_OK) == -1)
+		file = open(av[4], O_WRONLY | O_CREAT, 0777);
+	else if (access(av[4], W_OK) == -1)
+		ft_error("permission denied");
+	else
+		file = open(av[4], O_WRONLY | O_CREAT | O_TRUNC, 0777);
+	close(fd[1]);
+	dup2(fd[0], 0);
+	close(fd[0]);
+	dup2(file, 1);
+	close(file);
+	execute (av[3], env, par);
 }

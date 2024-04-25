@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 19:42:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/04/25 19:46:20 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/04/25 20:43:18 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,6 @@ void	ft_free(char **fr)
 
 void	error(char *str, t_list *par, char **path)
 {
-	if (par->line != NULL)
-		free(par->line);
 	ft_free(path);
 	ft_free(par->arg);
 	ft_putstr(str);

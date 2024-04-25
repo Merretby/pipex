@@ -6,11 +6,39 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 12:33:32 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/04/25 19:41:50 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/04/25 20:44:39 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+
+void	case1(t_list *par, char **env, char **path)
+{
+	if (execve(par->line, par->arg, env) == -1)
+		error("invalid path", par, path);
+}
+
+void	case2(t_list *par, char **env, char **path)
+{
+	if (access(par->arg[0], F_OK | X_OK) == 0)
+		execve(par->arg[0], par->arg, env);
+	else
+		error("invalid path", par, path);
+}
+
+char	*path_check(char **env)
+{
+	int	i;
+
+	i = 0;
+	while (env[i])
+	{
+		if (ft_strncmp(env[i], "PATH=", 5) == 0)
+			break ;
+		i++;
+	}
+	return (env[i]);
+}
 
 void	execute(char *av, char **env, t_list *par)
 {
@@ -19,16 +47,9 @@ void	execute(char *av, char **env, t_list *par)
 	int		i;
 
 	i = 0;
-	par->line = NULL;
-	while (env[i])
-	{
-		if (ft_strncmp(env[i], "PATH=", 5) == 0)
-			break ;
-		i++;
-	}
-	path = ft_split(env[i] + 5, ':');
+	str = path_check(env);
+	path = ft_split(str + 5, ':');
 	par->arg = ft_split(av, ' ');
-	i = 0;
 	while (path[i] && par->arg)
 	{
 		if (ft_strchr(par->arg[0], '/') == NULL)
@@ -41,53 +62,11 @@ void	execute(char *av, char **env, t_list *par)
 			free(par->line);
 		}
 		else
-		{
-			if (access(par->arg[0], F_OK | X_OK) == 0)
-				execve(par->arg[0], par->arg, env);
-			else
-				error("invalid path", par, path);
-		}
+			case2(par, env, path);
 		i++;
 	}
 	if (ft_strchr(par->arg[0], '/') == NULL)
-	{
-		if (execve(par->line, par->arg, env) == -1)
-			error("invalid path", par, path);
-	}
-}
-
-void	child(char **av, char **env, t_list *par, int *fd)
-{
-	int	file;
-
-	if (access(av[1], R_OK) == -1)
-		ft_error("permission denied");
-	file = open(av[1], O_RDONLY, 0777);
-	close(fd[0]);
-	dup2(fd[1], 1);
-	close(fd[1]);
-	dup2(file, 0);
-	close(file);
-	execute (av[2], env, par);
-}
-
-void	child2(char **av, char **env, t_list *par, int *fd)
-{
-	int	file;
-
-	file = 0;
-	if (access(av[4], F_OK) == -1)
-		file = open(av[4], O_WRONLY | O_CREAT, 0777);
-	else if (access(av[4], W_OK) == -1)
-		ft_error("permission denied");
-	else
-		file = open(av[4], O_WRONLY | O_CREAT | O_TRUNC, 0777);
-	close(fd[1]);
-	dup2(fd[0], 0);
-	close(fd[0]);
-	dup2(file, 1);
-	close(file);
-	execute (av[3], env, par);
+		case1(par, env, path);
 }
 
 int	main(int ac, char **av, char **env)
@@ -114,7 +93,5 @@ int	main(int ac, char **av, char **env)
 		ip2 = fork();
 		if (ip2 == 0)
 			child2(av, env, &par, fd);
-		wait(NULL);
 	}
-	wait(NULL);
 }

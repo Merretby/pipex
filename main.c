@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 12:33:32 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/04/25 18:09:55 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/04/25 19:41:50 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,8 @@ int	main(int ac, char **av, char **env)
 {
 	t_list	par;
 	int		fd[2];
+	int		ip1;
+	int		ip2;
 
 	if (ac != 5)
 		ft_error("U NEED 5 ARGUMENT");
@@ -104,14 +106,15 @@ int	main(int ac, char **av, char **env)
 		ft_error("ERROR");
 	if (pipe(fd) == -1)
 		exit (1);
-	if (fork() == 0)
+	ip1 = fork();
+	if (ip1 == 0)
 		child(av, env, &par, fd);
 	else
 	{
-		if (fork() == 0)
-		{
+		ip2 = fork();
+		if (ip2 == 0)
 			child2(av, env, &par, fd);
-			wait(NULL);
-		}
+		wait(NULL);
 	}
+	wait(NULL);
 }

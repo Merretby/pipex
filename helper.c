@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 12:33:03 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/04/20 16:16:01 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/04/24 19:59:10 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ static int	count_words(char const *str, char c)
 	return (wo);
 }
 
-char	**ft_split(char const *s, char c)
+char	**ft_split(char *s, char c)
 {
 	char	**ptr;
 	int		i;

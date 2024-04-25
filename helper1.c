@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 12:41:26 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/04/24 14:50:37 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/04/24 20:23:34 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,10 +70,23 @@ int	ft_strncmp(char *str1, char *str2, size_t n)
 	}
 	return (0);
 }
+void	ft_free(char **fr)
+{
+	size_t	i;
+
+	i = 0;
+	while (fr[i])
+	{
+		free(fr[i]);
+		i++;
+	}
+	free (fr);
+}
 
 void	ft_error(char *str)
 {
 	ft_putstr(str);
+	system("leaks pipex");
 	exit(1);
 }
 

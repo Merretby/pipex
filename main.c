@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 12:33:32 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/04/24 15:28:15 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/04/25 13:26:43 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,17 @@
 
 void	execute(char *av, char **env, t_list *par)
 {
-	char	*str;
 	char	**path;
 	int		i;
 
 	i = 0;
 	while (env[i])
 	{
-		str = ft_strchr(env[i++], 'P');
-		if (ft_strncmp(str, "PATH=", 5) == 0)
+		if (ft_strncmp(env[i], "PATH=", 5) == 0)
 			break ;
+		i++;
 	}
-	path = ft_split(str + 5, ':');
+	path = ft_split(env[i] + 5, ':');
 	par->arg = ft_split(av, ' ');
 	i = 0;
 	while (path[i] && par->arg)
@@ -42,13 +41,53 @@ void	execute(char *av, char **env, t_list *par)
 			if (access(par->arg[0], F_OK | X_OK) == 0)
 			{
 				if (execve(par->arg[0], par->arg, env) == -1)
-					ft_error("envalid path");
+				{
+					int j = 0;
+					free(par->line);
+					printf("1->%p\n", par->line);
+					ft_free(path);
+					while (path[j])
+					{
+						printf("2->%p\n", path[j]);
+						printf("\n");
+						j++;
+					}
+					j = 0;
+					ft_free(par->arg);
+					while (par->arg[j])
+					{
+						printf("3->%p\n", par->arg[j]);
+						printf("\n");
+						j++;
+					}
+					ft_error("invalid path");
+				}
 			}
 		}
 		i++;
+		free (par->line);
+		printf("1->%p\n", par->line);
 	}
 	if (execve(par->line, par->arg, env) == -1)
-		exit(1);
+	{
+		int j = 0;
+		ft_free(path);
+		while (path[j])
+		{
+			printf("2---->%p", path[j]);
+			printf("\n");
+			j++;
+		}
+		j = 0;
+		ft_free(par->arg);
+		while (par->arg[j])
+		{
+			printf("3---->%p\n", par->arg[j]);
+			printf("\n");
+			j++;
+		}
+		ft_error("invalid path");
+	}
 }
 
 void	child(char **av, char **env, t_list *par, int *fd)

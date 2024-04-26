@@ -6,11 +6,21 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 19:42:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/04/25 20:43:18 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/04/26 13:56:34 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+
+void	check(int ac, char **av)
+{
+	if (ac != 5)
+		ft_error("U NEED 5 ARGUMENT");
+	if (av[2][0] == '\0' || av[2][0] == '\\' || av[2][0] == '\t'\
+		||av[2][0] == '.' || av[3][0] == '\0'|| av[3][0] == '\\' \
+		|| av[3][0] == '\t' || av[3][0] == '.')
+		ft_error("ERROR");
+}
 
 void	ft_free(char **fr)
 {

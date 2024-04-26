@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 12:24:22 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/04/25 20:34:30 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/04/26 12:28:21 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ typedef struct s_list
 	char	*line;
 }	t_list;
 
+void	check(int ac, char **av);
 char	*ft_strchr(const char *str, int c);
 int		ft_strncmp(char *s1, char *s2, size_t n);
 char	**ft_split(char *s, char c);

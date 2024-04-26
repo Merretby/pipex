@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 12:33:32 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/04/25 20:44:39 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/04/26 12:27:17 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,22 +76,24 @@ int	main(int ac, char **av, char **env)
 	int		ip1;
 	int		ip2;
 
-	if (ac != 5)
-		ft_error("U NEED 5 ARGUMENT");
-	if (av[2][0] == '\0' || av[2][0] == '\\' || av[2][0] == '\t'\
-		|| av[2][0] == ' ' || av[2][0] == '.' || av[3][0] == '\0'\
-		|| av[3][0] == '\\' || av[3][0] == '\t' || av[3][0] == ' '\
-		|| av[3][0] == '.')
-		ft_error("ERROR");
+	check(ac, av);
 	if (pipe(fd) == -1)
 		exit (1);
 	ip1 = fork();
+	if (ip1 == -1)
+		ft_error("error in fork ip1");
 	if (ip1 == 0)
 		child(av, env, &par, fd);
-	else
+	if (ip1 != 0)
 	{
 		ip2 = fork();
+		if (ip1 == -1)
+			ft_error("error in fork ip2");
 		if (ip2 == 0)
 			child2(av, env, &par, fd);
 	}
+	close(fd[0]);
+	close(fd[1]);
+	wait(NULL);
+	wait(NULL);
 }

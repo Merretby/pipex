@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 12:41:26 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/04/25 20:33:26 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/04/27 14:23:57 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,9 @@ void	child(char **av, char **env, t_list *par, int *fd)
 
 	if (access(av[1], R_OK) == -1)
 		ft_error("permission denied");
-	file = open(av[1], O_RDONLY, 0777);
+	file = open(av[1], O_RDONLY);
+	if (file == -1)
+		ft_error("open erroe");
 	close(fd[0]);
 	dup2(fd[1], 1);
 	close(fd[1]);
@@ -92,11 +94,15 @@ void	child2(char **av, char **env, t_list *par, int *fd)
 
 	file = 0;
 	if (access(av[4], F_OK) == -1)
-		file = open(av[4], O_WRONLY | O_CREAT, 0777);
+		file = open(av[4], O_WRONLY | O_CREAT, 0644);
 	else if (access(av[4], W_OK) == -1)
 		ft_error("permission denied");
 	else
-		file = open(av[4], O_WRONLY | O_CREAT | O_TRUNC, 0777);
+	{
+		file = open(av[4], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		if (file == -1)
+			ft_error("open erroe");
+	}
 	close(fd[1]);
 	dup2(fd[0], 0);
 	close(fd[0]);

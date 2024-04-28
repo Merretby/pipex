@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 12:33:32 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/04/26 12:27:17 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/04/26 20:32:32 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	case1(t_list *par, char **env, char **path)
 {
 	if (execve(par->line, par->arg, env) == -1)
-		error("invalid path", par, path);
+		error("command not found", par, path);
 }
 
 void	case2(t_list *par, char **env, char **path)
@@ -23,12 +23,13 @@ void	case2(t_list *par, char **env, char **path)
 	if (access(par->arg[0], F_OK | X_OK) == 0)
 		execve(par->arg[0], par->arg, env);
 	else
-		error("invalid path", par, path);
+		error("command not found", par, path);
 }
 
-char	*path_check(char **env)
+char	*path_check(char **env, char *av)
 {
 	int	i;
+	int	j;
 
 	i = 0;
 	while (env[i])
@@ -36,6 +37,13 @@ char	*path_check(char **env)
 		if (ft_strncmp(env[i], "PATH=", 5) == 0)
 			break ;
 		i++;
+	}
+	j = 0;
+	while (av[j])
+	{
+		if (av[j] == '\t')
+			av[j] = ' ';
+		j++;
 	}
 	return (env[i]);
 }
@@ -47,7 +55,7 @@ void	execute(char *av, char **env, t_list *par)
 	int		i;
 
 	i = 0;
-	str = path_check(env);
+	str = path_check(env, av);
 	path = ft_split(str + 5, ':');
 	par->arg = ft_split(av, ' ');
 	while (path[i] && par->arg)

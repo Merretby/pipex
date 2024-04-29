@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 12:41:26 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/04/27 14:23:57 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/04/29 12:42:36 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,11 +75,9 @@ void	child(char **av, char **env, t_list *par, int *fd)
 {
 	int	file;
 
-	if (access(av[1], R_OK) == -1)
-		ft_error("permission denied");
 	file = open(av[1], O_RDONLY);
 	if (file == -1)
-		ft_error("open erroe");
+		ft_error("No such file or directory", fd);
 	close(fd[0]);
 	dup2(fd[1], 1);
 	close(fd[1]);
@@ -93,15 +91,17 @@ void	child2(char **av, char **env, t_list *par, int *fd)
 	int	file;
 
 	file = 0;
-	if (access(av[4], F_OK) == -1)
+	if (av[4][0] == '\0')
+		ft_error("No such file or directory", fd);
+	else if (access(av[4], F_OK) == -1)
 		file = open(av[4], O_WRONLY | O_CREAT, 0644);
 	else if (access(av[4], W_OK) == -1)
-		ft_error("permission denied");
+		ft_error("permission denied", fd);
 	else
 	{
 		file = open(av[4], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		if (file == -1)
-			ft_error("open erroe");
+			ft_error("open erroe", fd);
 	}
 	close(fd[1]);
 	dup2(fd[0], 0);

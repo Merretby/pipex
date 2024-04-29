@@ -15,9 +15,9 @@
 void	check(int ac, char **av)
 {
 	if (ac != 5)
-		ft_error("U NEED 5 ARGUMENT");
+		ft_putestr("U NEED 5 ARGUMENT");
 	if (av[2][0] == '\0' || av[3][0] == '\0')
-		ft_error("ERROR");
+		ft_putestr("ERROR");
 }
 
 void	ft_free(char **fr)
@@ -37,17 +37,19 @@ void	error(char *str, t_list *par, char **path)
 {
 	ft_free(path);
 	ft_free(par->arg);
-	ft_putstr(str);
+	ft_putestr(str);
 	exit(1);
 }
 
-void	ft_error(char *str)
+void	ft_error(char *str, int *fd)
 {
-	ft_putstr(str);
+	close(fd[0]);
+	close(fd[1]);
+	ft_putestr(str);
 	exit(1);
 }
 
-void	ft_putstr(char *str)
+void	ft_putestr(char *str)
 {
 	int	i;
 

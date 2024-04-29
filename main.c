@@ -89,14 +89,14 @@ int	main(int ac, char **av, char **env)
 		exit (1);
 	ip1 = fork();
 	if (ip1 == -1)
-		ft_error("error in fork ip1");
+		ft_putestr("error in fork ip1");
 	if (ip1 == 0)
 		child(av, env, &par, fd);
 	if (ip1 != 0)
 	{
 		ip2 = fork();
 		if (ip1 == -1)
-			ft_error("error in fork ip2");
+			ft_putestr("error in fork ip2\n");
 		if (ip2 == 0)
 			child2(av, env, &par, fd);
 	}

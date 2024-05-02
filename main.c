@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 12:33:32 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/04/26 20:32:32 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/02 11:55:06 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ int	main(int ac, char **av, char **env)
 	if (ip1 != 0)
 	{
 		ip2 = fork();
-		if (ip1 == -1)
+		if (ip2 == -1)
 			ft_putestr("error in fork ip2\n");
 		if (ip2 == 0)
 			child2(av, env, &par, fd);

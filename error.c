@@ -6,7 +6,7 @@
 /*   By: moer-ret <moer-ret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 19:42:17 by moer-ret          #+#    #+#             */
-/*   Updated: 2024/04/26 20:14:39 by moer-ret         ###   ########.fr       */
+/*   Updated: 2024/05/02 11:53:01 by moer-ret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,15 @@
 void	check(int ac, char **av)
 {
 	if (ac != 5)
+	{
 		ft_putestr("U NEED 5 ARGUMENT");
+		exit(1);
+	}
 	if (av[2][0] == '\0' || av[3][0] == '\0')
+	{
 		ft_putestr("ERROR");
+		exit(1);
+	}
 }
 
 void	ft_free(char **fr)
